@@ -2,6 +2,18 @@
 <html lang="en"> 
 <head> 
     <title>K. Allen Tech Services (K.A.T.S) | Father & Son Engineering</title>
+
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="shortcut icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    
+    <meta property="og:title" content="K. Allen Tech Services (K.A.T.S)" />
+    <meta property="og:description" content="Kingston's Expert Father & Son Engineering Team. Specialist in Apple, Windows, and Industrial Tech." />
+    <meta property="og:image" content="https://kallentechsolutions.github.io/logo.png" />
+    <meta property="og:url" content="https://kallentechsolutions.github.io/" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image">
+
     <meta name="description" content="Official portal for K. Allen Tech Services. Kingston's expert Father & Son engineering team. Specialist in Apple, Windows, and Industrial Tech restoration.">
     <meta name="keywords" content="K. Allen Tech Services, KATS, Computer Repair Kingston, MacBook Repair Jamaica, Electronics Engineer Kingston">
     <link rel="canonical" href="https://kallentechsolutions.github.io/" />
@@ -50,6 +62,11 @@
             --whatsapp: #25d366; --facebook: #1877F2; --instagram: #E4405F; --linkedin: #0077B5; 
         } 
 
+        /* CUSTOM COOL SCROLLBAR */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--dark-bg); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(var(--light-blue), var(--neon-green)); border-radius: 10px; }
+
         body.terminal-mode {
             --dark-bg: #000b00;
             --light-blue: #00ff41;
@@ -77,20 +94,22 @@
 
         #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; } 
 
-        .side-dock { position: fixed; right: 15px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 12px; z-index: 2000; } 
+        .side-dock { position: fixed; right: 15px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 12px; z-index: 2000; transition: 0.3s; } 
         .side-tile { width: 50px; height: 50px; background: #0d1117; border: 1px solid rgba(0, 210, 255, 0.4); border-radius: 12px; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.5); position: relative; } 
         .side-tile i { color: #ffffff !important; font-size: 24px; } 
         .side-tile:hover { transform: scale(1.1) translateX(-10px); border-color: #fff; box-shadow: 0 0 20px var(--light-blue); } 
         .side-tile::before { content: attr(data-label); position: absolute; right: 60px; background: var(--light-blue); color: #000; padding: 5px 10px; border-radius: 5px; font-size: 12px; font-weight: bold; opacity: 0; transition: 0.3s; pointer-events: none; white-space: nowrap; } 
         .side-tile:hover::before { opacity: 1; right: 70px; } 
 
+        /* SMOOTH SCROLL BUTTON */
+        #scrollTop { position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px; background: var(--neon-green); color: #000; border: none; border-radius: 50%; font-size: 24px; cursor: pointer; display: none; z-index: 2500; box-shadow: 0 0 20px var(--neon-green); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        #scrollTop:hover { transform: translateY(-10px); background: #fff; }
+
         header { padding: 10px 20px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; } 
           
-        /* FIX: Mobile Moving Ticker */
         .ticker-wrap { width:100%; overflow:hidden; background:rgba(0,0,0,0.5); border-top:1px solid var(--light-blue); border-bottom:1px solid var(--light-blue); margin-top:15px; position: relative; }
         .ticker { display:inline-block; white-space:nowrap; padding:10px 0; animation: marquee 25s linear infinite; color:var(--neon-green); font-family:monospace; font-size: 0.9rem; will-change: transform; }
         @keyframes marquee { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
-        /* Stops jumpiness on mobile touch */
         .ticker-wrap:hover .ticker { animation-play-state: paused; }
 
         .logo-container { position: relative; width: 150px; height: 150px; margin: 10px auto; } 
@@ -103,7 +122,6 @@
         .dot { width: 8px; height: 8px; background: var(--neon-green); border-radius: 50%; margin-right: 10px; animation: pulse 2s infinite; } 
         @keyframes pulse { 0% { box-shadow: 0 0 0 0px rgba(0, 255, 136, 0.6); } 100% { box-shadow: 0 0 0 10px rgba(0, 255, 136, 0); } } 
 
-        /* Clock Style */
         #sys-clock { font-family: monospace; color: var(--neon-green); font-size: 0.85rem; margin-top: 5px; letter-spacing: 1px; }
 
         h1 { margin: 0; font-size: 3.5rem; font-weight: 900; letter-spacing: 5px; color: #fff; text-shadow: 0 0 20px rgba(255,255,255,0.2); } 
@@ -113,6 +131,7 @@
         .card { background: var(--card-glass); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; transition: 0.4s; backdrop-filter: blur(15px); position: relative; } 
         .card:hover { transform: translateY(-10px); border-color: var(--light-blue); box-shadow: 0 10px 30px rgba(0, 210, 255, 0.2); cursor: pointer; } 
         .card-img { width: 100%; height: 200px; object-fit: cover; filter: grayscale(30%); transition: 0.5s; } 
+        .card:hover .card-img { filter: grayscale(0%); transform: scale(1.05); }
         .card-content { padding: 25px; } 
 
         .log-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; } 
@@ -142,16 +161,20 @@
         .modal-header { color: var(--light-blue); border-bottom: 1px solid rgba(0, 210, 255, 0.2); padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; } 
         .close-btn { color: #fff; font-size: 28px; font-weight: bold; cursor: pointer; } 
         .close-btn:hover { color: var(--neon-green); } 
-        .tos-section { margin-bottom: 20px; text-align: left; } 
-        .tos-section h4 { color: var(--neon-green); margin-bottom: 5px; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; } 
-        .legal-link { color: #666; text-decoration: none; font-size: 0.85rem; cursor: pointer; transition: 0.3s; display: block; margin-top: 15px; } 
 
         @media (max-width: 768px) {
             h1 { font-size: 2.2rem; letter-spacing: 2px; }
             .container { padding: 10px 20px; }
-            .side-dock { right: 5px; }
-            .side-tile { width: 40px; height: 40px; }
+            .side-dock { 
+                top: auto; bottom: 0; left: 0; right: 0; width: 100%; height: 65px; 
+                flex-direction: row; justify-content: center; transform: none; 
+                background: rgba(1, 4, 9, 0.95); padding: 5px 0; border-top: 1px solid var(--light-blue);
+                backdrop-filter: blur(10px);
+            }
+            .side-tile { width: 45px; height: 45px; margin: 0 5px; }
             .side-tile i { font-size: 18px; }
+            .side-tile::before { display: none; } 
+            #scrollTop { bottom: 85px; right: 20px; width: 50px; height: 50px; }
         }
     </style> 
 </head> 
@@ -159,6 +182,7 @@
 
  <div class="terminal-overlay"></div>
  <canvas id="bg-canvas"></canvas> 
+ <button id="scrollTop" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"><i class="fas fa-arrow-up"></i></button>
 
  <div class="side-dock"> 
      <a href="https://wa.me/18763833293" class="side-tile wa" data-label="WhatsApp" target="_blank"><i class="fab fa-whatsapp"></i></a> 
@@ -299,7 +323,11 @@
  </footer> 
 
  <script> 
-     // NEW: Live Clock logic
+     // DEVELOPER BISCUIT (F12)
+     console.log("%c K.A.T.S. SYSTEM ACCESS %c", "color: #00ff88; font-size: 25px; font-weight: bold; background: #000; padding: 10px; border: 2px solid #00ff88;", "");
+     console.log("%c [AUTH]: Engineering clearance granted. Welcome to the back-end. %c", "color: #00d2ff; font-family: monospace; font-size: 14px;", "");
+     console.log("%c [CMD]: 'npm run excellence' initiated... %c", "color: #ffffff; background: #333;");
+
      function updateClock() {
         const now = new Date();
         const options = { timeZone: 'America/Jamaica', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
@@ -319,12 +347,22 @@
      const canvas = document.getElementById('bg-canvas'); 
      const ctx = canvas.getContext('2d'); 
      let particles = []; 
+     let mouse = { x: null, y: null };
+
+     window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
+
      function init() { 
          canvas.width = window.innerWidth; 
          canvas.height = window.innerHeight; 
          particles = []; 
-         for (let i = 0; i < 60; i++) { 
-             particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4 }); 
+         for (let i = 0; i < 70; i++) { 
+             particles.push({ 
+                x: Math.random() * canvas.width, 
+                y: Math.random() * canvas.height, 
+                vx: (Math.random() - 0.5) * 0.4, 
+                vy: (Math.random() - 0.5) * 0.4,
+                size: Math.random() * 1.5
+             }); 
          } 
      } 
      function animate() { 
@@ -332,9 +370,19 @@
          ctx.fillStyle = '#00d2ff'; 
          particles.forEach(p => { 
              p.x += p.vx; p.y += p.vy; 
+
+             // INTERACTIVE MOUSE GRAVITY
+             let dx = mouse.x - p.x;
+             let dy = mouse.y - p.y;
+             let distance = Math.sqrt(dx*dx + dy*dy);
+             if (distance < 150) {
+                 p.x -= dx/20;
+                 p.y -= dy/20;
+             }
+
              if (p.x < 0 || p.x > canvas.width) p.vx *= -1; 
              if (p.y < 0 || p.y > canvas.height) p.vy *= -1; 
-             ctx.beginPath(); ctx.arc(p.x, p.y, 1, 0, Math.PI * 2); ctx.fill(); 
+             ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill(); 
          }); 
          requestAnimationFrame(animate); 
      } 
@@ -347,7 +395,14 @@
              var windowHeight = window.innerHeight; 
              var elementTop = reveals[i].getBoundingClientRect().top; 
              if (elementTop < windowHeight - 50) { reveals[i].classList.add("active"); } 
-         } 
+         }
+         
+         const scrollBtn = document.getElementById("scrollTop");
+         if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+             scrollBtn.style.display = "block";
+         } else {
+             scrollBtn.style.display = "none";
+         }
      } 
      window.onscroll = reveal; 
      reveal(); 
