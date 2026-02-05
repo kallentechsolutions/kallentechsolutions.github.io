@@ -54,156 +54,151 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> 
      
     <style> 
-        :root {  
-            --dark-bg: #010409;  
-            --light-blue: #00d2ff;  
-            --neon-green: #00ff88;  
-            --card-glass: rgba(13, 17, 23, 0.85);  
-            --whatsapp: #25d366; --facebook: #1877F2; --instagram: #E4405F; --linkedin: #0077B5; 
-        } 
+    :root {  
+        --dark-bg: #010409;  
+        --light-blue: #00d2ff;  
+        --neon-green: #00ff88;  
+        --neon-pink: #ff0055;
+        --card-glass: rgba(13, 17, 23, 0.85);  
+        --whatsapp: #25d366; --facebook: #1877F2; --instagram: #E4405F; --linkedin: #0077B5; 
+    } 
 
-        /* PRELOADER */
-        #loader-wrapper {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--dark-bg); z-index: 10000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 0.5s ease;
-        }
-        .loader-bar { width: 200px; height: 2px; background: rgba(255,255,255,0.1); position: relative; margin-top: 15px; }
-        .loader-progress { position: absolute; height: 100%; background: var(--light-blue); width: 0%; transition: 0.3s; box-shadow: 0 0 10px var(--light-blue); }
+    /* PRELOADER */
+    #loader-wrapper {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: var(--dark-bg); z-index: 10000;
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        transition: opacity 0.5s ease;
+    }
+    .loader-bar { width: 200px; height: 2px; background: rgba(255,255,255,0.1); position: relative; margin-top: 15px; }
+    .loader-progress { position: absolute; height: 100%; background: var(--light-blue); width: 0%; transition: 0.3s; box-shadow: 0 0 10px var(--light-blue); }
 
-        /* SCROLLBAR */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--dark-bg); }
-        ::-webkit-scrollbar-thumb { background: linear-gradient(var(--light-blue), var(--neon-green)); border-radius: 10px; }
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--dark-bg); }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(var(--light-blue), var(--neon-green)); border-radius: 10px; }
 
-        body.terminal-mode {
-            --dark-bg: #000b00;
-            --light-blue: #00ff41;
-            --neon-green: #00ff41;
-        }
-        .terminal-overlay { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.06));
-            background-size: 100% 3px, 3px 100%; z-index: 9999; pointer-events: none; 
-        }
-        body.terminal-mode .terminal-overlay { display: block; opacity: 0.2; }
+    body.terminal-mode {
+        --dark-bg: #000b00;
+        --light-blue: #00ff41;
+        --neon-green: #00ff41;
+    }
+    .terminal-overlay { 
+        display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), 
+                    linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.06));
+        background-size: 100% 3px, 3px 100%; z-index: 9999; pointer-events: none; 
+    }
+    body.terminal-mode .terminal-overlay { display: block; opacity: 0.2; }
 
-        body {  
-            margin: 0; padding: 0; background-color: var(--dark-bg); 
-            color: #ffffff; font-family: 'Segoe UI', Roboto, sans-serif; 
-            overflow-x: hidden; cursor: crosshair; 
-            background-image:  
-                linear-gradient(rgba(0, 210, 255, 0.05) 1px, transparent 1px), 
-                linear-gradient(90deg, rgba(0, 210, 255, 0.05) 1px, transparent 1px); 
-            background-size: 50px 50px; transition: background 0.3s ease;
-        } 
+    body {  
+        margin: 0; padding: 0; background-color: var(--dark-bg); 
+        color: #ffffff; font-family: 'Segoe UI', Roboto, sans-serif; 
+        overflow-x: hidden; cursor: crosshair; 
+        background-image:  
+            linear-gradient(rgba(0, 210, 255, 0.05) 1px, transparent 1px), 
+            linear-gradient(90deg, rgba(0, 210, 255, 0.05) 1px, transparent 1px); 
+        background-size: 50px 50px; transition: background 0.3s ease;
+    } 
 
-        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; } 
+    #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; } 
 
-        .side-dock { position: fixed; right: 15px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 12px; z-index: 2000; transition: 0.3s; } 
-        .side-tile { width: 50px; height: 50px; background: #0d1117; border: 1px solid rgba(0, 210, 255, 0.4); border-radius: 12px; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.5); position: relative; } 
-        .side-tile i { color: #ffffff !important; font-size: 24px; } 
-        .side-tile:hover { transform: scale(1.1) translateX(-10px); border-color: #fff; box-shadow: 0 0 20px var(--light-blue); } 
-        .side-tile::before { content: attr(data-label); position: absolute; right: 60px; background: var(--light-blue); color: #000; padding: 5px 10px; border-radius: 5px; font-size: 12px; font-weight: bold; opacity: 0; transition: 0.3s; pointer-events: none; white-space: nowrap; } 
-        .side-tile:hover::before { opacity: 1; right: 70px; } 
+    /* HIGH TECH OVERRIDE BUTTON */
+    .side-dock { position: fixed; right: 15px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 12px; z-index: 2000; transition: 0.3s; } 
+    .side-tile { width: 50px; height: 50px; background: #0d1117; border: 1px solid rgba(0, 210, 255, 0.4); border-radius: 12px; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.5); position: relative; } 
+    
+    .side-tile[data-label="Override"] {
+        background: linear-gradient(45deg, var(--neon-pink), var(--light-blue), var(--neon-green));
+        background-size: 200% 200%;
+        animation: cyberShift 3s ease infinite;
+        border: 2px solid #fff;
+    }
+    @keyframes cyberShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
 
-        #scrollTop { position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px; background: var(--neon-green); color: #000; border: none; border-radius: 50%; font-size: 24px; cursor: pointer; display: none; z-index: 2500; box-shadow: 0 0 20px var(--neon-green); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        #scrollTop:hover { transform: translateY(-10px); background: #fff; }
+    .side-tile i { color: #ffffff !important; font-size: 24px; } 
+    .side-tile:hover { transform: scale(1.1) translateX(-10px); border-color: #fff; box-shadow: 0 0 20px var(--light-blue); } 
+    .side-tile::before { content: attr(data-label); position: absolute; right: 60px; background: var(--light-blue); color: #000; padding: 5px 10px; border-radius: 5px; font-size: 12px; font-weight: bold; opacity: 0; transition: 0.3s; pointer-events: none; white-space: nowrap; } 
+    .side-tile:hover::before { opacity: 1; right: 70px; } 
 
-        header { padding: 40px 20px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; } 
-          
-        .ticker-wrap { width:100%; overflow:hidden; background:rgba(0,0,0,0.5); border-top:1px solid var(--light-blue); border-bottom:1px solid var(--light-blue); margin-top:25px; position: relative; }
-        .ticker { display:inline-block; white-space:nowrap; padding:12px 0; animation: marquee 30s linear infinite; color:var(--neon-green); font-family:monospace; font-size: 0.9rem; will-change: transform; }
-        @keyframes marquee { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
-        .ticker-wrap:hover .ticker { animation-play-state: paused; }
+    #scrollTop { position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px; background: var(--neon-green); color: #000; border: none; border-radius: 50%; font-size: 24px; cursor: pointer; display: none; z-index: 2500; box-shadow: 0 0 20px var(--neon-green); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    #scrollTop:hover { transform: translateY(-10px); background: #fff; }
 
-        .logo-container { position: relative; width: 160px; height: 160px; margin: 10px auto; } 
-        .logo-img { width: 100%; border-radius: 50%; border: 4px solid var(--light-blue); background: white; z-index: 2; position: relative; transition: 0.5s; } 
-        .logo-container:hover .logo-img { transform: rotate(5deg) scale(1.05); box-shadow: 0 0 30px var(--light-blue); } 
-        .scan-line { position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); z-index: 3; animation: scan 3s linear infinite; } 
-        @keyframes scan { 0% { top: 0; opacity: 0; } 10%, 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } } 
+    header { padding: 40px 20px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; } 
+      
+    .ticker-wrap { width:100%; overflow:hidden; background:rgba(0,0,0,0.5); border-top:1px solid var(--light-blue); border-bottom:1px solid var(--light-blue); margin-top:25px; position: relative; }
+    .ticker { display:inline-block; white-space:nowrap; padding:12px 0; animation: marquee 30s linear infinite; color:var(--neon-green); font-family:monospace; font-size: 0.9rem; will-change: transform; }
+    @keyframes marquee { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
 
-        .status-badge { display: inline-flex; align-items: center; background: rgba(0, 255, 136, 0.1); color: var(--neon-green); padding: 10px 20px; border-radius: 50px; border: 1px solid var(--neon-green); margin-bottom: 10px; font-weight: 900; font-size: 0.8rem; letter-spacing: 2px; text-shadow: 0 0 5px var(--neon-green); } 
-        .dot { width: 8px; height: 8px; background: var(--neon-green); border-radius: 50%; margin-right: 10px; animation: pulse 2s infinite; } 
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0px rgba(0, 255, 136, 0.6); } 100% { box-shadow: 0 0 0 10px rgba(0, 255, 136, 0); } } 
+    .logo-container { position: relative; width: 160px; height: 160px; margin: 10px auto; } 
+    .logo-img { width: 100%; border-radius: 50%; border: 4px solid var(--light-blue); background: white; z-index: 2; position: relative; transition: 0.5s; } 
+    .scan-line { position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); z-index: 3; animation: scan 3s linear infinite; } 
+    @keyframes scan { 0% { top: 0; opacity: 0; } 10%, 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } } 
 
-        #sys-clock { font-family: monospace; color: var(--neon-green); font-size: 0.85rem; margin-top: 5px; letter-spacing: 1px; }
+    .status-badge { display: inline-flex; align-items: center; background: rgba(0, 255, 136, 0.1); color: var(--neon-green); padding: 10px 20px; border-radius: 50px; border: 1px solid var(--neon-green); margin-bottom: 10px; font-weight: 900; font-size: 0.8rem; letter-spacing: 2px; text-shadow: 0 0 5px var(--neon-green); } 
+    #sys-clock { font-family: monospace; color: var(--neon-green); font-size: 0.85rem; margin-top: 5px; letter-spacing: 1px; }
 
-        h1 { margin: 15px 0 0 0; font-size: 3.8rem; font-weight: 900; letter-spacing: 6px; color: #fff; text-shadow: 0 0 25px rgba(255,255,255,0.2); } 
+    h1 { margin: 15px 0 0 0; font-size: 3.8rem; font-weight: 900; letter-spacing: 6px; color: #fff; text-shadow: 0 0 25px rgba(255,255,255,0.2); } 
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 10px 80px 20px 20px; box-sizing: border-box; } 
-        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; } 
-        .card { background: var(--card-glass); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; overflow: hidden; transition: 0.4s; backdrop-filter: blur(15px); position: relative; } 
-        .card:hover { transform: translateY(-10px); border-color: var(--light-blue); box-shadow: 0 15px 40px rgba(0, 210, 255, 0.3); cursor: pointer; } 
-        .card-img { width: 100%; height: 210px; object-fit: cover; filter: grayscale(40%); transition: 0.5s; border-bottom: 1px solid rgba(0, 210, 255, 0.2); } 
-        .card:hover .card-img { filter: grayscale(0%); transform: scale(1.03); }
-        .card-content { padding: 25px; } 
-        .card-content h3 { color: var(--light-blue); margin-top: 0; letter-spacing: 1px; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 10px 80px 20px 20px; box-sizing: border-box; } 
 
-        .log-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; } 
-        .log-card { background: rgba(255,255,255,0.03); padding: 20px; border-left: 5px solid var(--neon-green); border-radius: 0 15px 15px 0; transition: 0.3s; } 
-        .log-card h4 { margin-top: 0; color: #fff; }
+    /* HIGH TECH MODAL SIZING & COLOR */
+    .modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.92); backdrop-filter: blur(12px); overflow-y: auto; } 
+    .modal-content { 
+        background: var(--card-glass); 
+        margin: 20px auto; 
+        padding: 30px; 
+        border: 2px solid var(--light-blue); 
+        width: 92%; 
+        max-width: 900px; 
+        border-radius: 20px; 
+        color: #ccc; 
+        box-shadow: 0 0 40px rgba(0, 210, 255, 0.2); 
+        position: relative; 
+    } 
+    
+    /* Responsive Desktop/Snap Scaling */
+    @media (min-width: 1024px) {
+        .modal-content { width: 70%; margin: 50px auto; }
+    }
 
-        .contact-hub { padding: 80px 20px; background: rgba(13, 17, 23, 0.98); border-radius: 40px; border: 1px solid rgba(0, 210, 255, 0.3); text-align: center; margin-top: 80px; box-shadow: 0 0 60px rgba(0,0,0,0.6); } 
-        .address-highlight { background: rgba(0, 255, 136, 0.1); border: 2px solid var(--neon-green); padding: 15px 30px; border-radius: 15px; display: inline-block; margin-bottom: 25px; color: #fff; font-weight: 900; text-decoration: none; transition: 0.3s; box-shadow: 0 0 15px rgba(0, 255, 136, 0.2); } 
+    .modal-header h2 { 
+        background: linear-gradient(90deg, var(--neon-green), var(--light-blue), var(--neon-pink));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-family: monospace;
+        text-transform: uppercase;
+    }
 
-        .hub-list { max-width: 600px; margin: 0 auto 50px auto; display: flex; flex-direction: column; gap: 14px; } 
-        .hub-row { background: rgba(255,255,255,0.05); padding: 18px 25px; border-radius: 12px; text-decoration: none; color: #fff; display: flex; align-items: center; gap: 15px; transition: 0.3s; border: 1px solid transparent; cursor: pointer; } 
-        .hub-row:hover { border-color: var(--light-blue); background: rgba(255,255,255,0.1); transform: translateX(10px); } 
-        .hub-row .label { color: var(--neon-green); font-size: 0.7rem; font-weight: 900; border: 1px solid var(--neon-green); padding: 4px 10px; border-radius: 5px; text-transform: uppercase; } 
+    /* TERMS OF SERVICE STYLING */
+    .tos-section { 
+        border-left: 3px solid var(--light-blue); 
+        padding-left: 20px; 
+        margin-bottom: 25px; 
+        background: rgba(255,255,255,0.02); 
+        padding: 15px;
+    }
+    .tos-section h4 { color: var(--neon-green); margin-top: 0; font-family: monospace; letter-spacing: 1px; }
+    .tos-section p { font-size: 0.9rem; line-height: 1.5; color: #eee; }
 
-        .btn-glow { 
-            background: var(--light-blue); color: #000; padding: 22px 80px; border-radius: 15px; 
-            text-decoration: none; font-weight: 900; font-size: 1.2rem; transition: 0.3s; 
-            cursor: pointer; display: inline-block; animation: glowPulse 2s infinite; 
-        } 
-        @keyframes glowPulse { 0% { box-shadow: 0 0 5px var(--light-blue); } 50% { box-shadow: 0 0 25px var(--light-blue); } 100% { box-shadow: 0 0 5px var(--light-blue); } }
-        .btn-glow:hover { transform: scale(1.05); background: #fff; animation: none; box-shadow: 0 0 40px #fff; } 
-          
-        .footer-socials { display: flex; justify-content: center; gap: 35px; margin-top: 30px; } 
-        .footer-socials a { font-size: 2.5rem; transition: 0.3s; } 
-        .wa-icon { color: var(--whatsapp); } .fb-icon { color: var(--facebook); } .ig-icon { color: var(--instagram); } .li-icon { color: var(--linkedin); } 
+    #repairIframe { 
+        width: 100%; 
+        height: 70vh; 
+        border: none; 
+        border-radius: 10px; 
+        background: #fff; 
+        color-scheme: light;
+    }
 
-        footer { text-align: center; padding: 100px 20px; color: #666; font-weight: 900; } 
-        .legal-link { cursor: pointer; text-decoration: underline; transition: 0.3s; }
-        .legal-link:hover { color: var(--light-blue); }
-        .reveal { opacity: 0; transform: translateY(40px); transition: 1s all ease-out; } 
-        .reveal.active { opacity: 1; transform: translateY(0); } 
-
-        /* MODAL STYLING */
-        .modal { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.92); backdrop-filter: blur(12px); overflow-y: auto; } 
-        .modal-content { background: var(--card-glass); margin: 50px auto; padding: 35px; border: 1px solid var(--light-blue); width: 90%; max-width: 800px; border-radius: 20px; color: #ccc; box-shadow: 0 0 40px rgba(0, 210, 255, 0.3); position: relative; } 
-        .modal-header { color: var(--light-blue); border-bottom: 1px solid rgba(0, 210, 255, 0.2); padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; } 
-        .close-btn { color: #fff; font-size: 28px; font-weight: bold; cursor: pointer; } 
-        .close-btn:hover { color: var(--neon-green); } 
-
-        /* TERMINAL TICKET STYLES */
-        #repairIframe { width: 100%; height: 75vh; border: none; border-radius: 10px; background: rgba(255,255,255,0.02); }
-        .form-overlay-msg { text-align: center; padding: 40px 20px; border: 2px solid var(--neon-green); border-radius: 20px; background: rgba(0, 255, 136, 0.05); }
-        .form-overlay-msg i { font-size: 4rem; color: var(--neon-green); margin-bottom: 20px; }
-
-        @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; letter-spacing: 3px; }
-            .container { padding: 10px 20px; }
-            .side-dock { 
-                top: auto; bottom: 0; left: 0; right: 0; width: 100%; height: 70px; 
-                flex-direction: row; justify-content: center; transform: none; 
-                background: rgba(1, 4, 9, 0.98); padding: 5px 0; border-top: 1px solid var(--light-blue);
-                backdrop-filter: blur(15px);
-            }
-            .side-tile { width: 48px; height: 48px; margin: 0 8px; }
-            .side-tile i { font-size: 20px; }
-            .side-tile::before { display: none; } 
-            #scrollTop { bottom: 90px; right: 20px; width: 50px; height: 50px; }
-            .ticker-wrap { margin-top: 40px; }
-        }
-        #repairIframe {
-    background-color: #010409; /* Matches your background */
-    color-scheme: dark; /* Tells the browser to prefer dark scrollbars/elements */
-        }
-    </style> 
+    @media (max-width: 768px) {
+        h1 { font-size: 2.5rem; }
+        .side-dock { bottom: 0; top: auto; width: 100%; height: 70px; flex-direction: row; transform: none; right: 0; background: #000; border-top: 1px solid var(--light-blue); }
+        .modal-content { padding: 15px; margin: 10px auto; }
+    }
+</style>
 </head> 
 <body> 
 
@@ -325,29 +320,37 @@
  </div> 
 
  <div id="tosModal" class="modal"> 
-     <div class="modal-content"> 
-          <div class="modal-header"> 
-              <h2 style="margin:0; letter-spacing:2px;">SERVICE TERMS</h2> 
-              <span class="close-btn" onclick="closeTos()">&times;</span> 
-          </div> 
-          <div class="tos-section"> 
-              <h4>1. Diagnostics & Estimates</h4> 
-              <p>All systems undergo a mandatory diagnostic phase. Estimates are based on initial findings; clients will be notified of any additional issues discovered during the repair process.</p> 
-          </div> 
-          <div class="tos-section"> 
-              <h4>2. Data Integrity</h4> 
-              <p>K.A.T.S. takes every precaution to protect hardware, but clients are responsible for backing up critical data prior to service. We are not liable for data loss due to pre-existing hardware failure.</p> 
-          </div> 
-          <div class="tos-section"> 
-              <h4>3. Part Procurement</h4> 
-              <p>Specialized components (Apple PSUs, Industrial Sensors) may require a non-refundable deposit before sourcing. We use OEM-equivalent or high-grade parts only.</p> 
-          </div> 
-          <div class="tos-section"> 
-              <h4>4. Collection Policy</h4> 
-              <p>Repairs must be collected within 30 days of completion. Equipment left beyond 60 days without communication may be subject to storage fees or disposal to cover costs.</p> 
-          </div> 
-     </div> 
- </div> 
+    <div class="modal-content" style="border-color: var(--neon-pink);"> 
+         <div class="modal-header"> 
+             <h2 style="margin:0; letter-spacing:2px;">[SYSTEM_LEGAL_ENFORCEMENT]</h2> 
+             <span class="close-btn" onclick="closeTos()">&times;</span> 
+         </div> 
+         
+         <div class="tos-section"> 
+             <h4>0x01. DIAGNOSTICS & CONSUMER RIGHTS</h4> 
+             <p>All systems undergo mandatory verification. Per the <strong>Consumer Protection Act of Jamaica</strong>, estimates are provided before major hardware shifts. Clients will be notified of "scope-creep" diagnostics immediately.</p> 
+         </div> 
+
+         <div class="tos-section"> 
+             <h4>0x02. DATA PROTECTION (JDPA)</h4> 
+             <p>Under the <strong>Jamaica Data Protection Act (JDPA)</strong>, K.A.T.S. operates as a Data Processor. We implement high-level encryption protocols. Backup of sensitive data is the client's responsibility prior to terminal hand-over.</p> 
+         </div> 
+
+         <div class="tos-section"> 
+             <h4>0x03. PROCUREMENT & LIENS</h4> 
+             <p>Specialized components (Apple OEM/Industrial) require a deposit. Per Jamaican Common Law, K.A.T.S. reserves the <strong>Right of Lien</strong>. Items not collected within 90 days may be liquidated to recover costs.</p> 
+         </div> 
+
+         <div class="tos-section"> 
+             <h4>0x04. ABANDONMENT PROTOCOL</h4> 
+             <p>Failure to communicate for 60 days following a "Ready for Collection" notice triggers abandonment status. Secure recycling or disposal of data-sensitive components will follow.</p> 
+         </div>
+         
+         <div style="text-align: center; color: var(--neon-pink); font-family: monospace; font-size: 0.7rem; margin-top: 20px;">
+             // END OF LINE // AUTH_CODE: KINGSTON_TECH_V2 //
+         </div>
+    </div> 
+</div> 
 
  <div id="ticketModal" class="modal"> 
     <div class="modal-content"> 
@@ -396,40 +399,49 @@
      setInterval(updateClock, 1000);
      updateClock();
 
-     // MODAL CONTROLS
-     function toggleTerminal() { document.body.classList.toggle('terminal-mode'); }
-     function openTos() { document.getElementById("tosModal").style.display = "block"; } 
-     function closeTos() { document.getElementById("tosModal").style.display = "none"; } 
+     // MODAL CONTROLS (OPTIMIZED)
+function toggleTerminal() { 
+    document.body.classList.toggle('terminal-mode'); 
+    console.log("%c [SYSTEM]: UI OVERRIDE TOGGLED", "color: #00ff41; font-weight: bold;");
+}
 
-     function openTicket() { 
-        document.getElementById("ticketModal").style.display = "block"; 
-        document.body.style.overflow = "hidden";
-        document.getElementById("repairIframe").style.display = "block";
-        document.getElementById("confirmMessage").style.display = "none";
-        document.getElementById("terminal-header").innerText = "> KATS_TICKET_PORTAL_V2.0";
-     }
-     function closeTicket() { 
-        document.getElementById("ticketModal").style.display = "none"; 
+function openTos() { 
+    document.getElementById("tosModal").style.display = "block"; 
+    document.body.style.overflow = "hidden";
+}
+
+function closeTos() { 
+    document.getElementById("tosModal").style.display = "none"; 
+    if (document.getElementById("ticketModal").style.display !== "block") {
         document.body.style.overflow = "auto";
-     }
+    }
+}
 
-     window.onclick = function(event) { 
-        if (event.target == document.getElementById("tosModal")) { closeTos(); } 
-        if (event.target == document.getElementById("ticketModal")) { closeTicket(); } 
-     } 
+function openTicket() { 
+    document.getElementById("ticketModal").style.display = "block"; 
+    document.body.style.overflow = "hidden"; // Locks background scroll
+    console.log("%c [KATS]: Repair Portal V2.0 Online", "color: #00d2ff; font-weight: bold;");
+}
 
-     function openTicket() { 
-        document.getElementById("ticketModal").style.display = "block"; 
-        document.body.style.overflow = "hidden"; // Locks the background scroll
-     }
+function closeTicket() { 
+    document.getElementById("ticketModal").style.display = "none"; 
+    document.body.style.overflow = "auto"; // Unlocks background
+    
+    // Resets the Google Form so it's fresh for the next use
+    const iframe = document.getElementById("repairIframe");
+    if (iframe) {
+        iframe.src = iframe.src;
+    }
+}
 
-     function closeTicket() { 
-        document.getElementById("ticketModal").style.display = "none"; 
-        document.body.style.overflow = "auto"; // Unlocks the background
-        
-        // This line resets the form so if they open it again, it starts at page 1
-        document.getElementById("repairIframe").src = document.getElementById("repairIframe").src;
-     }
+// Global Click-to-Close for both Modals
+window.onclick = function(event) { 
+    const tos = document.getElementById("tosModal");
+    const ticket = document.getElementById("ticketModal");
+    
+    if (event.target == tos) { closeTos(); } 
+    if (event.target == ticket) { closeTicket(); } 
+};
      
      // CANVAS PARTICLES
      const canvas = document.getElementById('bg-canvas'); 
@@ -486,5 +498,6 @@
  </script> 
  </body> 
  </html>
+
 
 
