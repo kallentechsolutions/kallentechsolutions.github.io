@@ -35,118 +35,165 @@
       "url": "https://kallentechservices-ja.github.io/", 
       "logo": "https://kallentechservices-ja.github.io/logo.png", 
       "image": "https://kallentechservices-ja.github.io/logo.png",
-      "address": { "@type": "PostalAddress", "streetAddress": "39 Grovedale Drive", "addressLocality": "Kingston", "addressRegion": "St. Andrew", "addressCountry": "JM" },
-      "telephone": "+18763833293", "priceRange": "$$", "openingHours": "Mo-Fr 09:00-17:00"
+      "address": { 
+        "@type": "PostalAddress", 
+        "streetAddress": "39 Grovedale Drive", 
+        "addressLocality": "Kingston", 
+        "addressRegion": "St. Andrew", 
+        "addressCountry": "JM" 
+      },
+      "telephone": "+18763833293",
+      "priceRange": "$$",
+      "openingHours": "Mo-Fr 09:00-17:00"
     } 
     </script> 
 
     <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> 
       
     <style> 
     :root {  
         --dark-bg: #010409; --light-blue: #00d2ff; --neon-green: #00ff88; --neon-pink: #ff0055; --neon-gold: #ffcc00;
-        --card-glass: rgba(13, 17, 23, 0.85); --accent: var(--light-blue);
+        --card-glass: rgba(13, 17, 23, 0.85); 
     } 
 
     /* PRELOADER */
-    #loader-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--dark-bg); z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.8s; }
-    .loader-bar { width: 250px; height: 3px; background: rgba(255,255,255,0.05); position: relative; margin-top: 20px; overflow: hidden; }
-    .loader-progress { position: absolute; height: 100%; background: var(--accent); width: 0%; transition: 0.4s; box-shadow: 0 0 15px var(--accent); }
+    #loader-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--dark-bg); z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: 0.5s; }
+    .loader-bar { width: 200px; height: 2px; background: rgba(255,255,255,0.1); position: relative; margin-top: 15px; }
+    .loader-progress { position: absolute; height: 100%; background: var(--light-blue); width: 0%; transition: 0.3s; box-shadow: 0 0 10px var(--light-blue); }
 
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: var(--dark-bg); }
     ::-webkit-scrollbar-thumb { background: linear-gradient(var(--light-blue), var(--neon-green)); border-radius: 10px; }
 
-    /* MODES */
-    body.terminal-mode { --dark-bg: #000b00; --accent: #00ff41; --light-blue: #00ff41; }
-    body.pink-mode { --accent: var(--neon-pink); --light-blue: var(--neon-pink); --dark-bg: #100008; }
-    body.gold-mode { --accent: var(--neon-gold); --light-blue: var(--neon-gold); --dark-bg: #0a0a00; }
+    /* OVERRIDE MODES */
+    body.terminal-mode { --dark-bg: #000b00; --light-blue: #00ff41; --neon-green: #00ff41; }
+    body.pink-mode { --light-blue: var(--neon-pink); --neon-green: #fff; --dark-bg: #1a000d; }
+    body.gold-mode { --light-blue: var(--neon-gold); --neon-green: #ffcc00; --dark-bg: #0d0d00; }
 
     .terminal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.06)); background-size: 100% 3px, 3px 100%; z-index: 9998; pointer-events: none; }
-    body.terminal-mode .terminal-overlay { display: block; opacity: 0.3; }
+    body.terminal-mode .terminal-overlay { display: block; opacity: 0.2; }
 
-    body { margin: 0; padding: 0; background-color: var(--dark-bg); color: #ffffff; font-family: 'Segoe UI', Roboto, sans-serif; overflow-x: hidden; cursor: crosshair; background-image: radial-gradient(circle at 2px 2px, rgba(0, 210, 255, 0.05) 1px, transparent 0); background-size: 40px 40px; transition: 0.5s; } 
+    body { margin: 0; padding: 0; background-color: var(--dark-bg); color: #ffffff; font-family: 'Segoe UI', Roboto, sans-serif; overflow-x: hidden; cursor: crosshair; background-image: linear-gradient(rgba(0, 210, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 210, 255, 0.05) 1px, transparent 1px); background-size: 50px 50px; transition: 0.4s ease; } 
     #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; } 
 
-    /* DOCK */
-    .side-dock { position: fixed; right: 20px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 15px; z-index: 2000; } 
-    .side-tile { width: 50px; height: 50px; background: rgba(13, 17, 23, 0.9); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: 0.3s; position: relative; } 
-    .side-tile:hover { transform: scale(1.1); border-color: var(--accent); }
-    .side-tile[data-label="Override"] { background: linear-gradient(45deg, var(--neon-pink), var(--light-blue), var(--neon-green), var(--neon-gold)); background-size: 300%; animation: cyberShift 4s infinite; border: 2px solid #fff; }
+    /* DOCK BOX - Fixed Responsive Issues */
+    .side-dock { position: fixed; right: 15px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 12px; z-index: 2000; } 
+    .side-tile { width: 50px; height: 50px; background: #0d1117; border: 1px solid rgba(0, 210, 255, 0.4); border-radius: 12px; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: 0.3s; position: relative; overflow: visible; } 
+    
+    .side-tile[data-label="Override"] { 
+        background: linear-gradient(45deg, var(--neon-pink), var(--light-blue), var(--neon-green), var(--neon-gold)); 
+        background-size: 300% 300%;
+        animation: cyberShift 4s ease infinite; 
+        border: 2px solid #fff; 
+        box-shadow: 0 0 15px rgba(255,255,255,0.3);
+    }
     @keyframes cyberShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-    #scrollTop { position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px; background: var(--accent); color: #000; border: none; border-radius: 50%; font-size: 24px; cursor: pointer; display: none; z-index: 2500; box-shadow: 0 0 20px var(--accent); }
+    .side-tile i { color: #ffffff !important; font-size: 20px; } 
+    .side-tile::before { content: attr(data-label); position: absolute; right: 60px; background: var(--light-blue); color: #000; padding: 5px 10px; border-radius: 5px; font-size: 12px; font-weight: bold; opacity: 0; transition: 0.3s; pointer-events: none; white-space: nowrap; } 
+    .side-tile:hover::before { opacity: 1; right: 70px; } 
 
-    /* HEADER */
-    header { padding: 50px 20px; text-align: center; } 
-    .logo-container { position: relative; width: 160px; height: 160px; margin: 0 auto 20px; } 
-    .logo-img { width: 100%; border-radius: 50%; border: 3px solid var(--accent); background: white; z-index: 5; position: relative; }
-    .scan-line { position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: var(--accent); box-shadow: 0 0 15px var(--accent); z-index: 6; animation: scan 3s linear infinite; opacity: 0.5; } 
-    @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+    #scrollTop { position: fixed; bottom: 80px; right: 30px; width: 55px; height: 55px; background: var(--neon-green); color: #000; border: none; border-radius: 50%; font-size: 24px; cursor: pointer; display: none; z-index: 2500; box-shadow: 0 0 20px var(--neon-green); }
 
-    .status-badge { display: inline-flex; align-items: center; background: rgba(0, 255, 136, 0.05); color: var(--neon-green); padding: 8px 18px; border-radius: 50px; border: 1px solid var(--neon-green); font-weight: 900; letter-spacing: 2px; font-size: 0.7rem; margin-bottom: 15px; } 
-    h1 { margin: 0; font-size: clamp(2.2rem, 8vw, 4rem); font-weight: 900; letter-spacing: -1px; } 
+    header { padding: 40px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; } 
+    .logo-container { position: relative; width: 160px; height: 160px; margin: 10px auto; } 
+    .logo-img { width: 100%; border-radius: 50%; border: 4px solid var(--light-blue); background: white; z-index: 2; position: relative; } 
+    .scan-line { position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); z-index: 3; animation: scan 3s linear infinite; } 
+    @keyframes scan { 0% { top: 0; opacity: 0; } 50% { opacity: 1; } 100% { top: 100%; opacity: 0; } } 
+    .status-badge { display: inline-flex; align-items: center; background: rgba(0, 255, 136, 0.1); color: var(--neon-green); padding: 10px 20px; border-radius: 50px; border: 1px solid var(--neon-green); font-weight: 900; letter-spacing: 2px; font-size: 0.8rem; } 
 
-    .ticker-wrap { width:100%; overflow:hidden; background:rgba(0,0,0,0.5); border-top:1px solid rgba(0, 210, 255, 0.1); border-bottom:1px solid rgba(0, 210, 255, 0.1); margin-top:30px; }
-    .ticker { display:inline-block; white-space:nowrap; padding:12px 0; animation: marquee 35s linear infinite; color:var(--accent); font-family: monospace; font-size: 0.85rem; }
-    @keyframes marquee { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
+    h1 { margin: 15px 0 0; font-size: clamp(2rem, 8vw, 3.8rem); font-weight: 900; letter-spacing: 6px; } 
+    .ticker-wrap { width:100%; overflow:hidden; background:rgba(0,0,0,0.5); border-top:1px solid var(--light-blue); border-bottom:1px solid var(--light-blue); margin-top:25px; }
+    .ticker { display:inline-block; white-space:nowrap; padding:12px 0; animation: marquee 40s linear infinite; color:var(--neon-green); font-family:monospace; }
+    @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-    /* LAYOUT */
-    .container { max-width: 1200px; margin: 0 auto; padding: 20px; } 
-    .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s; }
-    .reveal.active { opacity: 1; transform: translateY(0); }
-
-    .legacy-box { background: rgba(255,255,255,0.02); padding: 50px 30px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 80px; text-align: center; }
-
+    .container { max-width: 1200px; margin: 0 auto; padding: 10px 20px 100px; } 
     .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; } 
-    .card { background: var(--card-glass); border: 1px solid rgba(255,255,255,0.05); border-radius: 20px; overflow: hidden; transition: 0.3s; } 
-    .card:hover { transform: translateY(-10px); border-color: var(--accent); }
+    .card { background: var(--card-glass); border: 1px solid rgba(0, 210, 255, 0.15); border-radius: 20px; overflow: hidden; backdrop-filter: blur(10px); transition: 0.3s; } 
+    .card:hover { transform: translateY(-10px); border-color: var(--light-blue); box-shadow: 0 10px 30px rgba(0, 210, 255, 0.2); }
     .card-img { width: 100%; height: 200px; object-fit: cover; }
     .card-content { padding: 20px; }
-    .card-content h3 { color: var(--accent); margin: 0 0 10px; font-size: 1.2rem; }
-    .card-content p { color: #ccc; font-size: 0.9rem; line-height: 1.5; }
+    .card-content h3 { color: var(--light-blue); margin: 0 0 10px; }
 
-    .log-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; margin-top: 40px; }
-    .log-card { background: rgba(255,255,255,0.03); padding: 20px; border-left: 3px solid var(--accent); border-radius: 0 12px 12px 0; }
+    .log-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 30px; } 
+    .log-card { background: rgba(255,255,255,0.03); padding: 20px; border-left: 4px solid var(--neon-green); border-radius: 0 12px 12px 0; transition: 0.3s; } 
+    .log-card:hover { background: rgba(0, 255, 136, 0.05); }
 
-    /* CONTACT HUB FIX */
-    .contact-hub { background: rgba(0,0,0,0.3); padding: 60px 20px; border-radius: 30px; border: 1px solid var(--accent); margin-top: 80px; text-align: center; } 
-    .hub-list { max-width: 900px; margin: 40px auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; } 
-    .hub-row { background: rgba(255,255,255,0.04); padding: 15px 20px; border-radius: 12px; text-decoration: none; color: #fff; display: flex; align-items: center; gap: 15px; border: 1px solid transparent; transition: 0.3s; } 
-    .hub-row:hover { background: rgba(0, 210, 255, 0.1); border-color: var(--accent); transform: scale(1.02); }
-    .hub-row i { color: var(--accent); width: 20px; text-align: center; }
-    .hub-row .label { color: var(--neon-green); font-weight: 800; font-size: 0.65rem; border: 1px solid var(--neon-green); padding: 2px 8px; border-radius: 4px; text-transform: uppercase; }
-    .hub-row .detail { font-family: monospace; font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .contact-hub { background: rgba(255,255,255,0.02); padding: 60px 30px; border-radius: 30px; border: 1px solid var(--light-blue); text-align: center; margin-top: 80px; position: relative; overflow: hidden; } 
+    .hub-list { 
+        max-width: 900px; 
+        margin: 40px auto; 
+        display: grid; 
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
+        gap: 15px; 
+    } 
+    .hub-row { 
+        background: rgba(255,255,255,0.05); 
+        padding: 15px 20px; 
+        border-radius: 12px; 
+        text-decoration: none; 
+        color: #fff; 
+        display: flex; 
+        align-items: center; 
+        gap: 15px;
+        border: 1px solid rgba(0, 210, 255, 0.1); 
+        transition: 0.3s; 
+    } 
+    .hub-row:hover { border-color: var(--light-blue); background: rgba(0, 210, 255, 0.1); transform: translateX(5px); }
+    .hub-row i { color: var(--light-blue); font-size: 1.2rem; min-width: 25px; }
+    .hub-row .label { color: var(--neon-green); font-weight: bold; font-size: 0.7rem; border: 1px solid var(--neon-green); padding: 2px 8px; border-radius: 4px; text-transform: uppercase; white-space: nowrap; }
+    .hub-row .detail { font-family: monospace; font-size: 0.95rem; overflow: hidden; text-overflow: ellipsis; }
 
-    .btn-glow { background: var(--accent); color: #000; padding: 18px 50px; border-radius: 12px; font-weight: 900; font-size: 1.1rem; border: none; cursor: pointer; margin: 30px 0; box-shadow: 0 0 20px rgba(0, 210, 255, 0.3); transition: 0.3s; }
-    .btn-glow:hover { transform: scale(1.05); box-shadow: 0 0 40px var(--accent); }
+    .btn-glow { background: var(--light-blue); color: #000; padding: 20px 60px; border-radius: 12px; text-decoration: none; font-weight: 900; font-size: 1.1rem; display: inline-block; cursor: pointer; border: none; box-shadow: 0 0 15px var(--light-blue); margin: 30px 0; transition: 0.3s; }
+    .btn-glow:hover { transform: scale(1.05); box-shadow: 0 0 30px var(--light-blue); }
 
-    /* SOCIAL ICONS FIX */
-    .footer-socials { display: flex; justify-content: center; align-items: center; gap: 25px; margin-top: 30px; }
-    .footer-socials a { color: #fff; font-size: 26px; transition: 0.3s; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
-    .footer-socials a:hover { color: var(--accent); transform: translateY(-5px); }
+    /* SOCIAL ICONS REDESIGN */
+    .footer-socials { display: flex; justify-content: center; gap: 25px; margin-top: 40px; }
+    .social-btn { 
+        width: 60px; height: 60px; 
+        background: rgba(255,255,255,0.05); 
+        border: 1px solid rgba(255,255,255,0.1); 
+        border-radius: 50%; 
+        display: flex; align-items: center; justify-content: center; 
+        font-size: 24px; color: #fff; text-decoration: none; 
+        transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        backdrop-filter: blur(5px);
+    }
+    .social-btn:hover { 
+        transform: translateY(-10px) rotate(8deg); 
+        background: var(--light-blue); 
+        color: #000; 
+        box-shadow: 0 0 20px var(--light-blue); 
+        border-color: #fff;
+    }
 
-    /* MODAL FIX */
-    .modal { display: none; position: fixed; z-index: 9000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(10px); overflow: hidden; } 
-    .modal-content { background: #0d1117; margin: 2vh auto; padding: 0; border: 1px solid var(--accent); width: 95%; max-width: 900px; height: 96vh; border-radius: 15px; position: relative; display: flex; flex-direction: column; } 
-    .modal-header { padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; }
-    .close-btn { font-size: 28px; cursor: pointer; color: #fff; line-height: 1; }
-    #repairIframe { flex-grow: 1; width: 100%; border: none; background: #fff; border-radius: 0 0 15px 15px; }
+    .modal { display: none; position: fixed; z-index: 9000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); backdrop-filter: blur(12px); overflow-y: auto; } 
+    .modal-content { background: #0d1117; margin: 30px auto; padding: 30px; border: 2px solid var(--light-blue); width: 92%; max-width: 900px; border-radius: 20px; position: relative; } 
+    .close-btn { position: absolute; right: 20px; top: 20px; font-size: 35px; cursor: pointer; color: #fff; z-index: 10; }
+    #repairIframe { width: 100%; height: 75vh; border: none; border-radius: 10px; background: #fff; }
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s all ease; } 
+    .reveal.active { opacity: 1; transform: translateY(0); } 
+
+    /* SYSTEM STATUS BAR */
+    .system-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: #000; border-top: 1px solid var(--light-blue); padding: 5px 20px; display: flex; justify-content: space-between; font-family: monospace; font-size: 10px; color: var(--light-blue); z-index: 3000; }
 
     @media (max-width: 768px) {
-        .side-dock { bottom: 0; top: auto; width: 100%; height: 70px; flex-direction: row; left: 0; transform: none; background: #000; border-top: 1px solid var(--accent); justify-content: center; padding: 0; }
-        .container { padding-bottom: 100px; }
+        h1 { font-size: 2.2rem; }
+        .side-dock { bottom: 25px; top: auto; width: 100%; height: 60px; flex-direction: row; left: 0; transform: none; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); border-top: 1px solid var(--light-blue); justify-content: center; padding: 10px 0; }
+        .side-tile::before { display: none; }
         .hub-list { grid-template-columns: 1fr; }
-        .modal-content { height: 90vh; margin: 5vh auto; }
+        .container { padding: 10px 15px 120px; }
+        #scrollTop { bottom: 100px; right: 20px; }
     }
     </style>
 </head> 
 <body> 
 
  <div id="loader-wrapper">
-    <div style="font-family: monospace; color: var(--accent); letter-spacing: 3px; font-weight: bold;">INITIALIZING_KATS_OS...</div>
+    <div style="font-family: monospace; color: var(--neon-green); letter-spacing: 3px; font-weight: bold;">INITIALIZING KATS_OS...</div>
     <div class="loader-bar"><div class="loader-progress" id="load-progress"></div></div>
  </div>
 
@@ -163,80 +210,80 @@
  </div> 
 
  <header> 
-     <div class="status-badge" id="status-text">FIELD_SYSTEMS_ACTIVE</div> 
-     <div id="sys-clock" style="font-family: monospace; color: var(--accent); font-weight: bold;"></div> 
+     <div class="status-badge">FIELD SYSTEMS ACTIVE</div> 
+     <div id="sys-clock" style="font-family: monospace; color: var(--neon-green); margin-top: 10px; font-weight: bold; text-shadow: 0 0 5px var(--neon-green);"></div> 
      <div class="logo-container"> 
           <div class="scan-line"></div> 
           <img src="logo.png" alt="K. Allen Tech" class="logo-img"> 
      </div> 
      <h1>K. ALLEN TECH</h1> 
-     <p style="color: var(--accent); font-weight: 900; letter-spacing: 4px; margin-top: 10px;">FATHER & SON ENGINEERING</p>
+     <p style="color: var(--light-blue); font-weight: 900; letter-spacing: 3px; margin-top: 10px; text-transform: uppercase;">Father & Son Computer Engineering</p>
 
      <div class="ticker-wrap">
         <div class="ticker">
-            [SYSTEM LOG]: iMac PSU Restoration... SUCCESS // MacBook Calibration... OK // Industrial Scanner Diagnostic... ACTIVE // Network Audit: ABTAX LTD... DONE // Kingston Ops: ONLINE // Precision Eng: ACTIVE //
+            [SYSTEM LOG]: iMac PSU Restoration... SUCCESS // MacBook Calibration... OK // Industrial Scanner Diagnostic... ACTIVE // Network Audit: ABTAX LTD... DONE // Radiance Oral Care: Maintained // Kingston Ops: ONLINE // Precision Eng: ACTIVE // Field Tech Support: ONLINE //
         </div>
      </div>
  </header> 
 
  <div class="container"> 
-     <div class="reveal legacy-box"> 
-          <h2 style="color: var(--neon-green); margin-bottom: 20px; letter-spacing: 3px; font-weight: 900;">THE ENGINEERING LEGACY</h2> 
-          <p style="line-height: 2; color: #ddd; max-width: 950px; margin: 0 auto; font-size: 1.1rem;"> 
-              At KATS, engineering is a family standard. Working alongside my father—a veteran <span style="color: var(--accent); font-weight: 800;">Computer & Electronics Engineer</span>—we combine industrial logic with modern <span style="color: var(--accent); font-weight: 800;">Computer Engineering</span> expertise to provide a cross-generational technical mastery Kingston trusts. 
+     <div class="reveal" style="background: rgba(255,255,255,0.03); padding: 50px 40px; border-radius: 30px; border: 1px solid rgba(0, 210, 255, 0.15); margin-bottom: 80px; text-align: center; backdrop-filter: blur(8px);"> 
+          <h2 style="color: var(--neon-green); margin-bottom: 25px; letter-spacing: 3px; font-weight: 900;">THE LEGACY: FATHER & SON</h2> 
+          <p style="line-height: 2; color: #ddd; max-width: 950px; margin: 0 auto; font-size: 1.15rem;"> 
+              At KATS, engineering is a family standard. My father is a veteran <span style="color: var(--light-blue); font-weight: 800;">Computer & Electronics Engineer</span> specializing in the precision logic of industrial hardware. Working alongside him, I bring modern <span style="color: var(--light-blue); font-weight: 800;">Computer Engineering</span> expertise... Together, we provide a cross-generational technical mastery Kingston trusts. 
           </p> 
      </div> 
 
      <div class="services-grid"> 
           <div class="card reveal"> 
-              <img src="https://images.unsplash.com/photo-1517059224940-d4af9eec41b7?q=80&w=800&auto=format&fit=crop" class="card-img" loading="lazy"> 
+              <img src="https://images.unsplash.com/photo-1517059224940-d4af9eec41b7?q=80&w=800&auto=format&fit=crop" class="card-img" alt="Apple Support" loading="lazy"> 
               <div class="card-content"><h3>Apple Support</h3><p>Specialized iMac and MacBook diagnostics, PSU replacements, and precision display re-sealing.</p></div> 
           </div> 
           <div class="card reveal"> 
-              <img src="https://images.unsplash.com/photo-1555617766-c94804975da3?auto=format&fit=crop&w=800" class="card-img" loading="lazy"> 
+              <img src="https://images.unsplash.com/photo-1555617766-c94804975da3?auto=format&fit=crop&w=800" class="card-img" alt="Hardware Support" loading="lazy"> 
               <div class="card-content"><h3>Hardware & OS</h3><p>Windows 11 optimization, system deep-cleans, and high-performance component sourcing.</p></div> 
           </div> 
           <div class="card reveal"> 
-              <img src="https://images.unsplash.com/photo-1746005847013-13291f371f0f?q=80&w=1170&auto=format&fit=crop" class="card-img" loading="lazy"> 
+              <img src="https://images.unsplash.com/photo-1746005847013-13291f371f0f?q=80&w=1170&auto=format&fit=crop" class="card-img" alt="Phone Repair" loading="lazy"> 
               <div class="card-content"><h3>Phone Repair</h3><p>Precision screen replacement, battery health restoration, and charging port diagnostics.</p></div> 
           </div> 
           <div class="card reveal"> 
-              <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800" class="card-img" loading="lazy"> 
+              <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800" class="card-img" alt="Specialized Tech" loading="lazy"> 
               <div class="card-content"><h3>Specialized Tech</h3><p>Diagnostics for industrial sensors and specialized scanner computer units.</p></div> 
           </div> 
           <div class="card reveal"> 
-              <img src="https://www.cyberdb.co/wp-content/uploads/2025/01/How-IT-Consulting-Services-Can-Drive-Business-Growth.jpg" class="card-img" loading="lazy"> 
+              <img src="https://www.cyberdb.co/wp-content/uploads/2025/01/How-IT-Consulting-Services-Can-Drive-Business-Growth.jpg" class="card-img" alt="IT Consulting" loading="lazy"> 
               <div class="card-content"><h3>IT Consultancy</h3><p>Infrastructure scaling, procurement strategy, and digital workflow optimization for businesses.</p></div> 
           </div>
           <div class="card reveal"> 
-              <img src="https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?q=80&w=800" class="card-img" loading="lazy"> 
+              <img src="https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?q=80&w=800" class="card-img" alt="Printer Repair" loading="lazy"> 
               <div class="card-content"><h3>Printer Specialist</h3><p>Mechanical restoration for thermal, laser, and industrial ID printers.</p></div> 
           </div> 
           <div class="card reveal"> 
-              <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=800" class="card-img" loading="lazy"> 
+              <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=800" class="card-img" alt="Network Sharing" loading="lazy"> 
               <div class="card-content"><h3>Network Shares</h3><p>Office data configuration and security auditing for seamless collaboration.</p></div> 
           </div> 
           <div class="card reveal"> 
-              <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800" class="card-img" loading="lazy"> 
+              <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800" class="card-img" alt="Cyber Security" loading="lazy"> 
               <div class="card-content"><h3>System Integrity</h3><p>Surge protection audits and deep virus eradication to prevent downtime.</p></div> 
           </div>
      </div> 
 
      <div class="log-section reveal" style="margin-top: 100px;"> 
-          <h2 style="text-align: center; color: var(--accent); letter-spacing: 3px; font-weight: 900;">FIELD LOG HIGHLIGHTS</h2> 
+          <h2 style="text-align: center; color: var(--light-blue); letter-spacing: 3px; font-weight: 900;">FIELD LOG HIGHLIGHTS</h2> 
           <div class="log-grid"> 
               <div class="log-card"><h4>iMac Power Restoration</h4><p>Successful internal PSU replacement and VHB adhesive display re-sealing.</p></div> 
               <div class="log-card"><h4>Touchline Industries Ltd.</h4><p>Network share deployment & hardware procurement.</p></div> 
               <div class="log-card"><h4>Radiance Oral Care</h4><p>System cleaning & comprehensive hardware maintenance.</p></div> 
               <div class="log-card"><h4>Precision Alignment Ltd.</h4><p>Specialized scanner and computer system support.</p></div> 
               <div class="log-card"><h4>ABTAX Limited</h4><p>Fleet-wide OS upgrades & surge protection audits.</p></div> 
-              <div class="log-card"><h4>Sagility Jamaica</h4><p>Industrial ID printer diagnostics & repair.</p></div> 
+              <div class="log-card"><h4>Sagility Jamaica</h4><p>Industrial ID printer diagnostics & mechanical repair.</p></div> 
           </div> 
      </div> 
 
      <div class="contact-hub reveal"> 
-          <h2 style="color: var(--accent); letter-spacing: 3px; font-weight: 900;">COMMAND CENTER</h2> 
-          <div style="margin-bottom: 20px; font-weight: bold;"> 
+          <h2 style="color: var(--light-blue); letter-spacing: 3px; font-weight: 900;">COMMAND CENTER</h2> 
+          <div class="address-highlight" style="margin-bottom: 20px; font-size: 1.1rem; color: #fff;"> 
               <i class="fas fa-map-marker-alt" style="color: var(--neon-pink);"></i> 39 Grovedale Drive, Kingston 10, Jamaica 
           </div> 
           <div class="hub-list"> 
@@ -247,53 +294,57 @@
               <a href="mailto:marquino.allen16@gmail.com" class="hub-row"><i class="fas fa-user-cog"></i><span class="label">Tech 2</span><span class="detail">marquino.allen16@gmail.com</span></a> 
           </div> 
           <button class="btn-glow" onclick="openTicket()">INITIATE REPAIR TICKET</button> 
+          
           <div class="footer-socials"> 
-              <a href="https://wa.me/18763833293" target="_blank"><i class="fab fa-whatsapp"></i></a>
-              <a href="https://www.facebook.com/share/174szanVGW/" target="_blank"><i class="fab fa-facebook-f"></i></a> 
-              <a href="https://www.instagram.com/k.allentechrepair/" target="_blank"><i class="fab fa-instagram"></i></a> 
-              <a href="https://www.linkedin.com/company/k-allen-tech-services/" target="_blank"><i class="fab fa-linkedin-in"></i></a> 
+              <a href="https://wa.me/18763833293" target="_blank" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+              <a href="https://www.facebook.com/share/174szanVGW/" target="_blank" class="social-btn"><i class="fab fa-facebook-f"></i></a> 
+              <a href="https://www.instagram.com/k.allentechrepair/" target="_blank" class="social-btn"><i class="fab fa-instagram"></i></a> 
+              <a href="https://www.linkedin.com/company/k-allen-tech-services/" target="_blank" class="social-btn"><i class="fab fa-linkedin-in"></i></a> 
           </div> 
      </div> 
  </div> 
 
  <div id="tosModal" class="modal"> 
-    <div class="modal-content" style="border-color: var(--neon-pink); height: auto; margin: 15vh auto;"> 
-         <div class="modal-header">
-            <span style="color: var(--neon-pink); font-family: monospace; font-weight: bold;">[SYSTEM_LEGAL_ENFORCEMENT]</span>
-            <span class="close-btn" onclick="closeTos()">&times;</span> 
-         </div>
-         <div style="padding: 30px; border-left: 3px solid var(--neon-pink);">
-             <h4>0x01. JAMAICAN CONSUMER RIGHTS</h4><p>All services governed by the Consumer Protection Act of Jamaica.</p> 
-             <h4>0x02. DATA PROTECTION (JDPA)</h4><p>Client data handled with maximum encryption per JDPA standards.</p> 
-             <h4>0x03. LIEN & ABANDONMENT</h4><p>Equipment not collected within 90 days may be liquidated per Right of Lien.</p>
+    <div class="modal-content" style="border-color: var(--neon-pink);"> 
+         <span class="close-btn" onclick="closeTos()">&times;</span> 
+         <h2 style="color: var(--neon-pink); font-family: monospace;">[SYSTEM_LEGAL_ENFORCEMENT]</h2> 
+         <div style="border-left: 3px solid var(--neon-pink); padding-left: 20px; margin-top: 20px;">
+             <h4>0x01. JAMAICAN CONSUMER RIGHTS</h4> 
+             <p>All services are governed by the Consumer Protection Act of Jamaica. Diagnostics must be approved before major hardware restoration begins.</p> 
+             <h4>0x02. DATA PROTECTION (JDPA)</h4> 
+             <p>In compliance with the Jamaica Data Protection Act, client data is handled with maximum encryption.</p> 
+             <h4>0x03. LIEN & ABANDONMENT</h4> 
+             <p>Equipment not collected within 90 days of completion notification will be subject to the Right of Lien and may be liquidated.</p>
          </div>
     </div> 
  </div> 
 
  <div id="ticketModal" class="modal"> 
     <div class="modal-content"> 
-         <div class="modal-header">
-            <span style="color: var(--accent); font-family: monospace; font-weight: bold;">> KATS_PORTAL_V3.0</span>
-            <span class="close-btn" onclick="closeTicket()">&times;</span> 
-         </div>
+         <span class="close-btn" onclick="closeTicket()">&times;</span> 
+         <h2 style="color: var(--light-blue); font-family: monospace;">> KATS_TICKET_PORTAL_V3.1</h2> 
          <iframe id="repairIframe" src="https://docs.google.com/forms/d/e/1FAIpQLSfUoqHksgjwiqbakWZ7NinuDbGsA-fAuaxGOQllr9fkR8Nh6g/viewform?embedded=true">Loading…</iframe>
     </div> 
  </div>
 
- <footer style="text-align: center; padding: 50px 20px; opacity: 0.6; font-size: 0.8rem;">
-    <p>© 2026 (K.A.T.S) K. ALLEN TECH SERVICES | <a href="javascript:void(0)" onclick="openTos()" style="color: var(--accent); text-decoration: none;">Legal & Terms</a></p>
+ <div class="system-bar">
+    <div id="sys-status-msg">STABLE // PKTS: 0ms // CPU: 12% // RAM: 3.2GB</div>
+    <div id="sys-geo">LOC: KINGSTON, JM // IP: [ENCRYPTED]</div>
+ </div>
+
+ <footer style="text-align: center; padding: 50px 20px 80px; opacity: 0.6; font-size: 0.8rem;">
+    <p>© 2026 (K.A.T.S) K. ALLEN TECH SERVICES | <a href="javascript:void(0)" onclick="openTos()" style="color: var(--light-blue); text-decoration: none;">Legal & Terms</a></p>
  </footer>
 
  <script> 
      let overrideStep = 0;
      function cycleOverride() {
-        const body = document.body; const status = document.getElementById('status-text');
+        const body = document.body;
         overrideStep++;
-        if(overrideStep === 1) { body.classList.add('terminal-mode'); status.innerText = "OVERRIDE: TERMINAL_MODE"; }
-        else if(overrideStep === 2) { body.classList.remove('terminal-mode'); body.classList.add('pink-mode'); status.innerText = "OVERRIDE: CYBER_PINK"; }
-        else if(overrideStep === 3) { body.classList.remove('pink-mode'); body.classList.add('gold-mode'); status.innerText = "OVERRIDE: INDUSTRIAL_GOLD"; }
-        else { body.classList.remove('gold-mode'); overrideStep = 0; status.innerText = "FIELD_SYSTEMS_ACTIVE"; }
-        init(); 
+        if(overrideStep === 1) { body.classList.add('terminal-mode'); }
+        else if(overrideStep === 2) { body.classList.remove('terminal-mode'); body.classList.add('pink-mode'); }
+        else if(overrideStep === 3) { body.classList.remove('pink-mode'); body.classList.add('gold-mode'); }
+        else { body.classList.remove('gold-mode'); overrideStep = 0; }
      }
 
      window.addEventListener('load', () => {
@@ -305,18 +356,24 @@
                 document.getElementById('loader-wrapper').style.opacity = '0';
                 setTimeout(() => { document.getElementById('loader-wrapper').style.display = 'none'; }, 500);
             } else {
-                width += Math.random() * 20; if(width > 100) width = 100;
+                width += Math.random() * 25;
+                if(width > 100) width = 100;
                 progress.style.width = width + '%';
             }
-        }, 100);
+        }, 120);
      });
 
      function updateClock() {
         const now = new Date();
         const options = { timeZone: 'America/Jamaica', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
         document.getElementById('sys-clock').innerText = "SYS_TIME: " + now.toLocaleTimeString('en-US', options);
+        
+        // Randomize system bar stats for "hacking" effect
+        const cpu = Math.floor(Math.random() * 15) + 5;
+        const ram = (Math.random() * 2 + 2).toFixed(1);
+        document.getElementById('sys-status-msg').innerText = `STABLE // PKTS: 2ms // CPU: ${cpu}% // RAM: ${ram}GB`;
      }
-     setInterval(updateClock, 1000); updateClock();
+     setInterval(updateClock, 2000); updateClock();
 
      function openTicket() { document.getElementById("ticketModal").style.display = "block"; document.body.style.overflow = "hidden"; }
      function closeTicket() { document.getElementById("ticketModal").style.display = "none"; document.body.style.overflow = "auto"; }
@@ -331,15 +388,14 @@
      function init() { 
          canvas.width = window.innerWidth; canvas.height = window.innerHeight; 
          particles = []; 
-         const color = getComputedStyle(document.body).getPropertyValue('--accent').trim();
-         for (let i = 0; i < 70; i++) { particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4, size: Math.random() * 1.5, color: color }); } 
+         for (let i = 0; i < 70; i++) { particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4, size: Math.random() * 1.5 }); } 
      } 
      function animate() { 
-         ctx.clearRect(0, 0, canvas.width, canvas.height); 
+         ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = '#00d2ff'; 
          particles.forEach(p => { 
              p.x += p.vx; p.y += p.vy; 
              if (p.x < 0 || p.x > canvas.width) p.vx *= -1; if (p.y < 0 || p.y > canvas.height) p.vy *= -1; 
-             ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fillStyle = p.color; ctx.fill(); 
+             ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill(); 
          }); 
          requestAnimationFrame(animate); 
      } 
