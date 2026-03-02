@@ -60,12 +60,12 @@
 
     /* PRINT & PDF FIX: Forces content visibility and hides animations for PDF generation */
     @media print {
-        #loader-wrapper, #bg-canvas, #matrix-canvas, .terminal-overlay, .side-dock, #scrollTop, .system-bar, .scan-line {
+        #loader-wrapper, #bg-canvas, #matrix-canvas, .terminal-overlay, .side-dock, #scrollTop, .system-bar, .scan-line, .ticker-wrap, .btn-glow, .social-btn {
             display: none !important;
         }
         body { background: white !important; color: #000 !important; cursor: default !important; }
         .container { width: 100% !important; max-width: none !important; padding: 0 !important; }
-        .card, .log-card, .contact-hub, .reveal { 
+        .card, .log-card, .contact-hub, .reveal, .report-container { 
             background: #fff !important; 
             color: #000 !important; 
             border: 1px solid #000 !important; 
@@ -73,9 +73,11 @@
             transform: none !important; 
             break-inside: avoid;
             box-shadow: none !important;
+            margin: 10px 0 !important;
         }
-        h1, h2, h3, h4, p, span, .detail { color: #000 !important; text-shadow: none !important; }
-        .btn-glow { border: 2px solid #000 !important; background: #eee !important; color: #000 !important; }
+        h1, h2, h3, h4, p, span, .detail, td, th { color: #000 !important; text-shadow: none !important; }
+        .report-table th { background: #eee !important; border: 1px solid #000 !important; }
+        .report-table td { border: 1px solid #000 !important; }
     }
 
     /* ENHANCED K.A.T.S. HIGH-TECH PRELOADER */
@@ -163,6 +165,13 @@
     .log-card:hover { background: rgba(0, 255, 136, 0.05); border-color: rgba(0, 255, 136, 0.2); transform: translateX(10px); }
     .log-card h4 { margin: 0 0 10px; color: #fff; letter-spacing: 1px; }
 
+    /* OG REPORT STYLE */
+    .report-container { margin-top: 100px; background: rgba(13, 17, 23, 0.8); border: 1px solid var(--light-blue); border-radius: 20px; padding: 30px; }
+    .report-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-family: 'Courier New', monospace; font-size: 0.85rem; }
+    .report-table th { text-align: left; padding: 12px; border-bottom: 2px solid var(--light-blue); color: var(--neon-green); text-transform: uppercase; }
+    .report-table td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); color: #fff; }
+    .report-table tr:hover { background: rgba(0, 210, 255, 0.05); }
+
     .contact-hub { background: radial-gradient(circle at top right, rgba(0, 210, 255, 0.05), transparent), rgba(255,255,255,0.01); padding: 80px 40px; border-radius: 40px; border: 1px solid rgba(0, 210, 255, 0.2); text-align: center; margin-top: 100px; position: relative; overflow: hidden; backdrop-filter: blur(10px); } 
     .hub-list { max-width: 1000px; margin: 40px auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 18px; } 
     .hub-row { background: rgba(255,255,255,0.03); padding: 18px 25px; border-radius: 15px; text-decoration: none; color: #fff; display: flex; align-items: center; gap: 18px; border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.3s; } 
@@ -195,6 +204,8 @@
         .container { padding: 10px 20px 140px; }
         #scrollTop { bottom: 120px; right: 20px; width: 50px; height: 50px; }
         .contact-hub { padding: 50px 20px; }
+        .report-table { font-size: 0.7rem; }
+        .report-table th, .report-table td { padding: 5px; }
     }
     </style>
 </head> 
@@ -337,6 +348,50 @@
           </div> 
      </div> 
 
+     <div class="report-container reveal">
+        <h2 style="color: var(--light-blue); letter-spacing: 4px; font-family: 'Courier New', monospace;">> KATS_FIELD_SERVICE_REPORT_V1.0</h2>
+        <div style="margin-top: 10px; color: var(--neon-green); font-family: 'Courier New', monospace; font-size: 0.8rem;">ENGINEERS: K. ALLEN & M. ALLEN // LOC: KINGSTON, JM</div>
+        
+        <table class="report-table">
+            <thead>
+                <tr>
+                    <th>Service Date</th>
+                    <th>Client / Asset</th>
+                    <th>Technical Action taken</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2026-02-28</td>
+                    <td>ThinkPad P51 Workstation</td>
+                    <td>Mainboard swap & Kernel-level environment restoration.</td>
+                    <td>RESOLVED</td>
+                </tr>
+                <tr>
+                    <td>2026-02-25</td>
+                    <td>HP LaserJet Series</td>
+                    <td>Logic board re-seating and Network card interface sync.</td>
+                    <td>ONLINE</td>
+                </tr>
+                <tr>
+                    <td>2026-02-20</td>
+                    <td>iMac 2019 Unit</td>
+                    <td>PSU replacement and precision display re-sealing (VHB).</td>
+                    <td>DELIVERED</td>
+                </tr>
+                <tr>
+                    <td>2026-02-15</td>
+                    <td>Touchline Ltd Hub</td>
+                    <td>SME Network share deployment & data flow audit.</td>
+                    <td>MAINTAINED</td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="margin-top: 20px; border-top: 1px dashed rgba(255,255,255,0.2); padding-top: 15px; font-family: 'Courier New', monospace; font-size: 0.75rem; color: #888;">
+            * END OF LOG SUMMARY // SYSTEM INTEGRITY CHECK: 100% // AUTHORIZED BY K.A.T.S. ENGINEERING
+        </div>
+     </div>
      <div class="contact-hub reveal"> 
           <h2 style="color: var(--light-blue); letter-spacing: 5px; font-weight: 900; text-transform: uppercase;">Command Center</h2> 
           <div class="address-highlight" style="margin-bottom: 25px; font-size: 1.2rem; color: #fff; font-weight: 300;"> 
