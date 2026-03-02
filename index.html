@@ -1,63 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Title</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="log-section reveal">
-        <!-- existing content -->
-    </div>
-    <section class="reveal" id="report-section" style="margin-top: 50px;">
-        <h2 style="color: var(--light-blue); text-align: center; letter-spacing: 3px; font-weight: 900; text-transform: uppercase; margin-bottom: 40px;">Digital Field Report</h2>
-        <div class="card" style="padding: 30px; max-width: 900px; margin: 0 auto;" id="report-to-print">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--light-blue); padding-bottom: 15px; margin-bottom: 20px;">
-                <img src="logo.png" style="width: 80px;" alt="KATS Logo">
-                <div style="text-align: right;">
-                    <h3 style="margin: 0; color: var(--light-blue);">FIELD ENGINEERING REPORT</h3>
-                    <p style="font-size: 0.8rem; margin: 0; color: #bcc1c8;">K. Allen Tech Services (K.A.T.S)</p>
-                </div>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
-                <input type="text" id="cust-name" placeholder="Customer Name (e.g. Lowe Insurance)" style="background: rgba(255,255,255,0.05); border: 1px solid #333; color: white; padding: 10px; border-radius: 5px; font-family: Arial;">
-                <input type="text" id="call-no" placeholder="Call No. / Ticket ID" style="background: rgba(255,255,255,0.05); border: 1px solid #333; color: white; padding: 10px; border-radius: 5px; font-family: Arial;">
-                <input type="text" id="model-no" placeholder="Model (e.g. HP LaserJet MFP M528)" style="background: rgba(255,255,255,0.05); border: 1px solid #333; color: white; padding: 10px; border-radius: 5px; font-family: Arial;">
-                <input type="text" id="serial-no" placeholder="Serial Number (S/N)" style="background: rgba(255,255,255,0.05); border: 1px solid #333; color: white; padding: 10px; border-radius: 5px; font-family: Arial;">
-            </div>
-
-            <div style="margin-bottom: 20px;">
-                <label style="font-size: 0.8rem; color: var(--neon-green); font-weight: 900;">ACTIVITY DESCRIPTION:</label>
-                <textarea id="activity-desc" rows="6" style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid #333; color: white; padding: 10px; border-radius: 5px; margin-top: 5px; font-family: Arial;" placeholder="Describe the work done..."></textarea>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; border-top: 1px solid #333; padding-top: 15px;">
-                <div>
-                    <label style="font-size: 0.7rem; color: var(--neon-green); font-weight: 900;">START TIME</label>
-                    <input type="time" id="start-time" style="width:100%; background: #222; color: white; border: none; padding: 5px; border-radius: 3px;">
-                </div>
-                <div>
-                    <label style="font-size: 0.7rem; color: var(--neon-green); font-weight: 900;">END TIME</label>
-                    <input type="time" id="end-time" style="width:100%; background: #222; color: white; border: none; padding: 5px; border-radius: 3px;">
-                </div>
-                <div>
-                    <label style="font-size: 0.7rem; color: var(--neon-green); font-weight: 900;">ENGINEER</label>
-                    <select id="eng-name" style="width:100%; background: #222; color: white; border: none; padding: 5px; border-radius: 3px;">
-                        <option style="background: #222; color: white;">Kirk Allen</option>
-                        <option style="background: #222; color: white;">Marquino Allen</option>
-                    </select>
-                </div>
-            </div>
-        </div>
+<div class="digital-field-report">
+    <h2>Digital Field Report</h2>
+    <form id="fieldReportForm">
+        <label for="reporterName">Name:</label>
+        <input type="text" id="reporterName" name="reporterName" required>
         
-        <div style="text-align: center; margin-top: 20px;">
-            <button class="btn-glow" onclick="generatePDF()" style="padding: 15px 40px;">DOWNLOAD OFFICIAL PDF</button>
-        </div>
-    </section>
-    <div class="contact-hub reveal">
-        <!-- existing content -->
-    </div>
-</body>
-</html>
+        <label for="reportDate">Date:</label>
+        <input type="date" id="reportDate" name="reportDate" required>
+        
+        <label for="reportDescription">Description:</label>
+        <textarea id="reportDescription" name="reportDescription" required></textarea>
+        
+        <input type="submit" value="Submit Report">
+    </form>
+</div>
+<style>
+    .digital-field-report {
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin: 20px 0;
+        background-color: #f9f9f9;
+    }
+    .digital-field-report h2 {
+        color: #333;
+    }
+    .digital-field-report label {
+        display: block;
+        margin-bottom: 8px;
+    }
+    .digital-field-report input,
+    .digital-field-report textarea {
+        width: 100%;
+        margin-bottom: 12px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+</style>
