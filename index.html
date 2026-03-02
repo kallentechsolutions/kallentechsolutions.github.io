@@ -592,49 +592,58 @@ function generateReportPDF() {
     const element = document.getElementById('report-to-print');
     const custName = document.getElementById('cust-name').value || "Client";
     
-    // 1. Force the element to be visible and use solid colors for the capture
-    // This prevents the 'reveal' class (opacity 0) or transparency from making it blank
-    const originalStyle = element.getAttribute('style');
-    element.style.opacity = "1";
-    element.style.transform = "none";
-    element.style.background = "white";
-    element.style.color = "black";
-    element.style.position = "relative";
-    element.style.zIndex = "9999";
-
-    const inputs = element.querySelectorAll('input, textarea, select');
-    inputs.forEach(i => {
-        i.style.color = "black";
-        i.style.background = "#f0f0f0";
-        i.style.border = "1px solid #000";
-        // Ensure values are visible
-        if(i.tagName === 'TEXTAREA' || i.type === 'text') {
-            i.style.fontSize = "12pt";
-        }
+    // 1. CLONE THE REPORT to avoid messing up your live screen
+    const clone = element.cloneNode(true);
+    
+    // 2. PREPARE THE CLONE (Force it to be visible and black/white)
+    clone.style.opacity = "1";
+    clone.style.transform = "none";
+    clone.style.background = "white";
+    clone.style.color = "black";
+    clone.style.padding = "20px";
+    clone.style.width = "800px"; // Fixed width for consistent PDF layout
+    
+    // 3. IMPORTANT: Transfer values from inputs/textareas to the clone
+    // This ensures what you TYPED actually shows up
+    const originalInputs = element.querySelectorAll('input, textarea, select');
+    const cloneInputs = clone.querySelectorAll('input, textarea, select');
+    
+    originalInputs.forEach((input, index) => {
+        const val = input.value;
+        const parent = cloneInputs[index].parentElement;
+        // Replace the input box with actual text for the PDF
+        const textReplacement = document.createElement('div');
+        textReplacement.innerText = val || "N/A";
+        textReplacement.style.padding = "10px";
+        textReplacement.style.borderBottom = "1px solid #eee";
+        textReplacement.style.color = "black";
+        textReplacement.style.fontFamily = "monospace";
+        
+        parent.replaceChild(textReplacement, cloneInputs[index]);
     });
 
+    // 4. PDF OPTIONS
     const opt = {
-        margin:       [10, 10, 10, 10],
-        filename:     'KATS_Report_' + custName.replace(/\s+/g, '_') + '.pdf',
-        image:        { type: 'jpeg', quality: 0.98 },
+        margin:       10,
+        filename:     'KATS_Report_' + custName + '.pdf',
+        image:        { type: 'jpeg', quality: 1 },
         html2canvas:  { 
             scale: 2, 
-            useCORS: true, 
             backgroundColor: '#ffffff',
-            logging: true // Helpful for debugging
+            useCORS: true,
+            logging: false
         },
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
 
-    // 2. Generate PDF
-    html2pdf().set(opt).from(element).save().then(() => {
-        // 3. Restore the original "Cyber" styling after download
-        element.setAttribute('style', originalStyle);
-        inputs.forEach(i => {
-            i.style.color = "white";
-            i.style.background = "rgba(255,255,255,0.05)";
-            i.style.border = "1px solid #333";
-        });
+    // 5. RUN THE GENERATOR ON THE CLONE
+    // We temporarily add the clone to the body (hidden) so it can be captured
+    clone.style.position = "fixed";
+    clone.style.top = "-5000px"; 
+    document.body.appendChild(clone);
+
+    html2pdf().set(opt).from(clone).save().then(() => {
+        document.body.removeChild(clone); // Clean up
     });
 }
 </script>
