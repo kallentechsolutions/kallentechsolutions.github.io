@@ -594,34 +594,34 @@ function generateReportPDF() {
     const element = document.getElementById('report-to-print');
     const custName = document.getElementById('cust-name').value || "Client";
     
-    // We force the opacity and visibility so the 'reveal' animation doesn't make it blank
+    // 1. Prepare the element for a "Clean Snapshot"
+    // This stops the PDF from being a solid black block
     const opt = {
-        margin:       [10, 0], 
-        filename:     'KATS_Report_' + custName + '.pdf',
-        image:        { type: 'jpeg', quality: 1.0 },
-        html2canvas:  { 
+        margin: [10, 5],
+        filename: 'KATS_Report_' + custName + '.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
             scale: 2, 
             useCORS: true, 
-            backgroundColor: '#0d1117', // Forces your website's dark background
-            onclone: (clonedDoc) => {
-                // This ensures the hidden clone is fully visible for the "photocopy"
-                const clonedReport = clonedDoc.getElementById('report-to-print');
-                clonedReport.style.opacity = "1";
-                clonedReport.style.visibility = "visible";
-                clonedReport.style.transform = "none";
-                
-                // Ensure text inside inputs is captured as white
-                const inputs = clonedReport.querySelectorAll('input, textarea, select');
-                inputs.forEach(i => {
-                    i.style.color = "white";
-                    i.style.backgroundColor = "rgba(255,255,255,0.05)";
-                });
-            }
+            backgroundColor: '#0d1117', // Force the dark background color
+            logging: false
         },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
 
-    html2pdf().set(opt).from(element).save();
+    // 2. Temporarily fix the "Reveal" hidden state so the PDF isn't blank
+    const originalOpacity = element.style.opacity;
+    const originalTransform = element.style.transform;
+    
+    element.style.opacity = "1";
+    element.style.transform = "none";
+
+    // 3. Generate the PDF
+    html2pdf().set(opt).from(element).save().then(() => {
+        // Restore original website animations
+        element.style.opacity = originalOpacity;
+        element.style.transform = originalTransform;
+    });
 }
 </script>
 </body> 
