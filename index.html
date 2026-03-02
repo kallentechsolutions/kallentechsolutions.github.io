@@ -594,34 +594,41 @@ function generateReportPDF() {
     const element = document.getElementById('report-to-print');
     const custName = document.getElementById('cust-name').value || "Client";
     
-    // 1. Prepare the element for a "Clean Snapshot"
-    // This stops the PDF from being a solid black block
     const opt = {
         margin: [10, 5],
         filename: 'KATS_Report_' + custName + '.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
+        image: { type: 'jpeg', quality: 1.0 },
         html2canvas: { 
             scale: 2, 
             useCORS: true, 
-            backgroundColor: '#0d1117', // Force the dark background color
-            logging: false
+            backgroundColor: '#010409', // This matches your --dark-bg exactly
+            logging: false,
+            onclone: (clonedDoc) => {
+                // Fix the "Invisible/Blank" issue
+                const report = clonedDoc.getElementById('report-to-print');
+                report.style.opacity = "1";
+                report.style.visibility = "visible";
+                report.style.transform = "none";
+                report.style.display = "block";
+                
+                // Fix the "Black Box" issue by making background solid
+                report.style.background = "#0d1117"; 
+                
+                // Ensure text and inputs show up white
+                const inputs = report.querySelectorAll('input, textarea, select');
+                inputs.forEach(i => {
+                    i.style.color = "white";
+                    i.style.background = "#1a1a1a";
+                    i.style.border = "1px solid #333";
+                    // This forces the text you typed to actually appear
+                    i.setAttribute('value', i.value);
+                });
+            }
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
 
-    // 2. Temporarily fix the "Reveal" hidden state so the PDF isn't blank
-    const originalOpacity = element.style.opacity;
-    const originalTransform = element.style.transform;
-    
-    element.style.opacity = "1";
-    element.style.transform = "none";
-
-    // 3. Generate the PDF
-    html2pdf().set(opt).from(element).save().then(() => {
-        // Restore original website animations
-        element.style.opacity = originalOpacity;
-        element.style.transform = originalTransform;
-    });
+    html2pdf().set(opt).from(element).save();
 }
 </script>
 </body> 
