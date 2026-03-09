@@ -587,40 +587,11 @@
           const scrollBtn = document.getElementById("scrollTop");
           if (document.documentElement.scrollTop > 600) { scrollBtn.style.display = "block"; } else { scrollBtn.style.display = "none"; }
      } 
-     window.onscroll = reveal; reveal(); 
-
-     // UPDATED PDF FUNCTION TO PREVENT BLANK OUTPUT
-async function generateReportPDF() {
-    const element = document.getElementById('report-to-print');
-    const custName = document.getElementById('cust-name').value || "Client";
-    
-    // Force the element to be visible
-    element.style.opacity = "1";
-    element.style.visibility = "visible";
-    element.style.display = "block";
-
-    const opt = {
-        margin: [10, 10],
-        filename: `KATS_Report_${custName}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { 
-            scale: 1, // Lowering scale to 1 often fixes the blank page crash
-            useCORS: true,
-            backgroundColor: '#0d1117',
-            removeContainer: true
-        },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-
-    // Use a Promise to wait 500ms so the browser can finish rendering the text
-    await new Promise(resolve => setTimeout(resolve, 500));
-
-    try {
-        await html2pdf().set(opt).from(element).save();
-    } catch (err) {
-        console.error("PDF generation failed:", err);
-    }
-}
+     window.onscroll = reveal; reveal();
 </script>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="pdf-handler.js"></script>
+    
 </body> 
 </html>
